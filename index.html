@@ -1,0 +1,83 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>jupiter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <canvas id="square"></canvas>
+        <div class="form-group">
+          <!-- <label>Stripes</label> -->
+          <!-- <span id="stripes_label" class="form_text">40<span> -->
+          <input type="range" class="form-control" id="stripes" min="1" max="80" value="40" step="1">
+        </div>
+        <footer>
+          inspired by <a href="https://en.wikipedia.org/wiki/Jupiter_(Starfucker_album)">jupiter</a>
+        </footer>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script type="application/javascript">
+            var draw = function(num_stripes) {
+
+              var canvas_size = 800;
+              var line_height = 4;
+              var stripe_height = canvas_size / num_stripes;
+              var num_lines = parseInt(num_stripes) + 1;
+              var line_color = "#242225";
+              // TODO: Different colors for left and right sides.
+              var colors = ["#403d53", "#db8ead", "#789756", "#84afbb", "#f0ecad", "#814333", "#4e4d63", "#80adbc", "#a7c170", "#f0d278", "#ec6c51", "#834133", "#4d455e", "#7cb4bf", "#6f9969", "#f3d273", "#dc686d", "#55375a", "#a57b56", "#c1968a", "#779995", "#373b3e", "#523555", "#44413a", "#545046", "#9bbcc7", "#a1ae56", "#b17952", "#d06162", "#b3b092", "#dcde9c", "#cf3c3f", "#2e3555", "#76a3bc", "#a3bf65", "#d75d41"];
+
+              var canvas = document.getElementById("square");
+              canvas.width = canvas_size;
+              canvas.height = canvas_size;
+              if (canvas.getContext) {
+                var ctx = canvas.getContext("2d");
+                // Repeat for left and right halves
+                for (var j = 0; j < 2; j++) {
+                  // Draw triangles
+                  for (var i = 0; i < num_stripes; i++) {
+                    // ctx.fillStyle = colors[i % colors.length];
+                    ctx.fillStyle = colors[Math.floor( Math.random() * colors.length)];
+                    ctx.beginPath();
+                    ctx.moveTo(j * canvas_size, canvas_size / 2);
+                    ctx.lineTo(canvas_size / 2, i * stripe_height);
+                    ctx.lineTo(canvas_size / 2, i * stripe_height + stripe_height);
+                    ctx.fill();
+                  }
+                  // Draw lines, including bottom line
+                  // TODO: Get the lines to converge at the ends and form a dark shadow.
+                  for (var i = 0; i < num_lines; i++) {
+                    ctx.fillStyle = line_color;
+                    ctx.beginPath();
+                    ctx.moveTo(j * canvas_size, canvas_size / 2);
+                    ctx.lineTo(canvas_size / 2, i * stripe_height);
+                    ctx.lineTo(canvas_size / 2, i * stripe_height + line_height);
+                    ctx.fill();
+                  }
+                }
+                // Draw center line
+                ctx.beginPath();
+                ctx.moveTo(canvas_size / 2, 0);
+                ctx.lineTo(canvas_size / 2, canvas_size);
+                ctx.stroke();
+              }
+            };
+            $(document).ready(function() {
+              var selected_stripes = $("#stripes").val();
+              draw(selected_stripes);
+              $("#stripes").bind("change mousemove", function(event) {
+                // TODO: update label
+                // redraw
+                if ($(this).val() != selected_stripes) {
+                  selected_stripes = $(this).val();
+                  draw($(this).val());
+                }
+              });
+            });
+        </script>
+    </body>
+</html>
