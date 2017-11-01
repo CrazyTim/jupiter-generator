@@ -1,3 +1,3 @@
 # jupiter-generator
 
-JQuery / HTML5 Canvas.
+jQuery / HTML5 Canvas.
