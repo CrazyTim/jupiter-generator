@@ -68,10 +68,15 @@
 
               function drawHalf(start_x_pos) {
                 ctx.lineWidth = 0.5;
+                var last_color = null;
                 // Draw triangles
                 for (var i = 0; i < num_stripes; i++) {
-                  // ctx.fillStyle = colors[i % colors.length];
-                  ctx.fillStyle = colors[Math.floor( Math.random() * colors.length)];
+                  // Pick a random fill color, different than the last one
+                  do {
+                    ctx.fillStyle = colors[Math.floor( Math.random() * colors.length)];
+                  } while (ctx.fillStyle == last_color);
+                  last_color = ctx.fillStyle;
+
                   ctx.beginPath();
                   ctx.moveTo(start_x_pos, canvas_size / 2);
                   ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance);
