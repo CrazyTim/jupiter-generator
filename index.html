@@ -49,12 +49,20 @@
                 drawHalf(edge_distance, canvas_size / 2);
                 drawHalf(canvas_size - edge_distance, canvas_size / 2);
 
-                // Draw center line
+                // Draw center vertical line
                 ctx.beginPath();
                 ctx.moveTo(canvas_size / 2, 0);
                 ctx.lineTo(canvas_size / 2, canvas_size);
                 ctx.lineWidth = 2;
                 ctx.stroke();
+
+                // Draw center horizontal line
+                ctx.beginPath();
+                ctx.moveTo(0, canvas_size / 2);
+                ctx.lineTo(canvas_size, canvas_size / 2);
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
               }
 
               function drawHalf(start_x_pos) {
