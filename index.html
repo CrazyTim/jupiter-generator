@@ -26,9 +26,11 @@
 
               var canvas_size = 800;
               var line_height = 4;
-              var stripe_height = canvas_size / num_stripes;
+              var edge_distance = 8;
+              var stripe_height = (canvas_size - (edge_distance * 2) - (line_height / 2)) / num_stripes;
               var num_lines = parseInt(num_stripes) + 1;
               var line_color = "#242225";
+
               // TODO: Different colors for left and right sides.
               var colors = ["#403d53", "#db8ead", "#789756", "#84afbb", "#f0ecad", "#814333",
                 "#4e4d63", "#80adbc", "#a7c170", "#f0d278", "#ec6c51", "#834133", "#4d455e",
@@ -42,36 +44,43 @@
               canvas.height = canvas_size;
               if (canvas.getContext) {
                 var ctx = canvas.getContext("2d");
-                // Repeat for left and right halves
-                for (var j = 0; j < 2; j++) {
-                  // Draw triangles
-                  for (var i = 0; i < num_stripes; i++) {
-                    // ctx.fillStyle = colors[i % colors.length];
-                    ctx.fillStyle = colors[Math.floor( Math.random() * colors.length)];
-                    ctx.beginPath();
-                    ctx.moveTo(j * canvas_size, canvas_size / 2);
-                    ctx.lineTo(canvas_size / 2, i * stripe_height);
-                    ctx.lineTo(canvas_size / 2, i * stripe_height + stripe_height);
-                    ctx.fill();
-                  }
-                  // Draw lines, including bottom line
-                  // TODO: Get the lines to converge at the ends and form a dark shadow.
-                  for (var i = 0; i < num_lines; i++) {
-                    ctx.fillStyle = line_color;
-                    ctx.beginPath();
-                    ctx.moveTo(j * canvas_size, canvas_size / 2);
-                    ctx.lineTo(canvas_size / 2, i * stripe_height);
-                    ctx.lineTo(canvas_size / 2, i * stripe_height + line_height);
-                    ctx.fill();
-                  }
-                }
+
+                // Draw left and right halves
+                drawHalf(edge_distance, canvas_size / 2);
+                drawHalf(canvas_size - edge_distance, canvas_size / 2);
+
                 // Draw center line
                 ctx.beginPath();
                 ctx.moveTo(canvas_size / 2, 0);
                 ctx.lineTo(canvas_size / 2, canvas_size);
                 ctx.stroke();
               }
+
+              function drawHalf(start_x_pos) {
+                // Draw triangles
+                for (var i = 0; i < num_stripes; i++) {
+                  // ctx.fillStyle = colors[i % colors.length];
+                  ctx.fillStyle = colors[Math.floor( Math.random() * colors.length)];
+                  ctx.beginPath();
+                  ctx.moveTo(start_x_pos, canvas_size / 2);
+                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance);
+                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance + stripe_height);
+                  ctx.fill();
+                }
+                // Draw lines, including bottom line
+                // TODO: Get the lines to converge at the ends and form a dark shadow.
+                for (var i = 0; i < num_lines; i++) {
+                  ctx.fillStyle = line_color;
+                  ctx.beginPath();
+                  ctx.moveTo(start_x_pos, canvas_size / 2);
+                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance);
+                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance + line_height);
+                  ctx.fill();
+                }
+              }
+
             };
+
             $(document).ready(function() {
               var selected_stripes = $("#stripes").val();
               draw(selected_stripes);
