@@ -30,7 +30,6 @@
               var line_height = 4;
               var edge_distance = 8;
               var stripe_height = (canvas_size - (edge_distance * 2) - (line_height / 2)) / num_stripes;
-              var num_lines = parseInt(num_stripes) + 1;
               var line_color = "#242225";
 
               // TODO: Different colors for left and right sides.
@@ -68,6 +67,7 @@
               }
 
               function drawHalf(start_x_pos) {
+                ctx.lineWidth = 0.5;
                 // Draw triangles
                 for (var i = 0; i < num_stripes; i++) {
                   // ctx.fillStyle = colors[i % colors.length];
@@ -77,17 +77,25 @@
                   ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance);
                   ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance + stripe_height);
                   ctx.fill();
+                  ctx.stroke();
                 }
-                // Draw lines, including bottom line
-                // TODO: Get the lines to converge at the ends and form a dark shadow.
-                for (var i = 0; i < num_lines; i++) {
-                  ctx.fillStyle = line_color;
+                // Draw lines
+                for (var i = 0; i < num_stripes; i++) {
                   ctx.beginPath();
                   ctx.moveTo(start_x_pos, canvas_size / 2);
                   ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance);
-                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance + line_height);
-                  ctx.fill();
+                  ctx.lineTo(canvas_size / 2, i * stripe_height + edge_distance + stripe_height);
+                  ctx.closePath();
+                  ctx.stroke();
                 }
+                // Draw thicker top and bottom lines
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(start_x_pos, canvas_size / 2);
+                ctx.lineTo(canvas_size / 2, edge_distance);
+                ctx.lineTo(canvas_size / 2, canvas_size - edge_distance);
+                ctx.closePath();
+                ctx.stroke();
               }
 
             };
