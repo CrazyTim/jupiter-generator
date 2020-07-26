@@ -14,7 +14,7 @@
         <div class="form-group">
           <!-- <label>Stripes</label> -->
           <!-- <span id="stripes_label" class="form_text">40<span> -->
-          <input type="range" class="form-control" id="stripes" min="1" max="80" value="40" step="1">
+          <input type="range" class="form-control" id="stripes" min="1" max="36" value="18" step="1">
         </div>
         <footer>
           <a href="https://github.com/ummcheng/jupiter-generator">source</a> &bull; inspired by <a href="https://en.wikipedia.org/wiki/Jupiter_(Starfucker_album)">jupiter</a>
@@ -23,6 +23,8 @@
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script type="application/javascript">
             var draw = function(num_stripes) {
+
+              num_stripes *=2; // Ensure num_stripes is always even (due to center horizontal line)
 
               var canvas_size = 800;
               var line_height = 4;
@@ -98,7 +100,7 @@
                 // redraw
                 if ($(this).val() != selected_stripes) {
                   selected_stripes = $(this).val();
-                  draw($(this).val());
+                  draw(parseInt($(this).val()));
                 }
               });
             });
